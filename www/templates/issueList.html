@@ -1,27 +1,14 @@
 <ion-view view-title="Issue List">
-  <ion-content>
-    <ion-content ng-show="show.list" class="background-stable">
-  <ion-refresher on-refresh="reload()">
-  </ion-refresher>
-  <div ng-show="show.list">
-    <ion-list>
-      <ion-item ui-sref="detail({id: event.id})" class="item-royal item-avatar item-icon-right" ng-repeat="event in events | limitTo:limit">
-        <img ng-src="{{event.thumb}}">
-        <h2>{{event.name}}</h2>
-        <p>
-          <b>{{event.city}}</b> / District {{event.district}}<br>
-          {{event.street}} {{event.number}}, {{event.zip}} {{event.city}}
-        </p>
-        <i class="icon ion-ios-arrow-right"></i>
-      </ion-item>
-      <ion-item class="text-center item-royal" ng-if="events && !events.length">No events found :(</ion-item>
-    </ion-list>
-  </div>
-  <ion-infinite-scroll
-    ng-if="!events || events.length > limit"
-    class=""
-    on-infinite="loadMore()">
-  </ion-infinite-scroll>
-</ion-content>
+    <ion-content>
+      <div>
+        <ion-list show-reorder="issuesCtrl.shouldShowReorder" ng-controller="IssuesCtrl as issuesCtrl">
+          <ion-item class="item-avatar" ui-sref="issueDetails({id: issue.id})" ng-repeat="issue in issuesCtrl.issues">
+              <img ng-src="{{issue.imageUrl}}">
+              <h2 class="positive">{{issue.description}}</h2>
+              <p>{{issue.state}}</p>
+              <i class="icon ion-ios-arrow-right"></i>
+          </ion-item>
+        </ion-list>
+      </div>
   </ion-content>
 </ion-view>

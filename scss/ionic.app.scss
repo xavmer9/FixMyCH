@@ -21,3 +21,21 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+/**.item {
+  &.item-divider {
+    background-color: $stable;
+    border-width: 0px;
+    color: $light;
+  }
+
+  > .item-content {
+    > p {
+      color: $light;
+    }
+    > h2 {
+      color: $positive;
+      font-weight: bold;
+    }
+  }
+}
+**/
