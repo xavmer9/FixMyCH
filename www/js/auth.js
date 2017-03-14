@@ -10,7 +10,7 @@ angular.module('citizen-engagement').service('AuthService', function(store) {
 
     unsetAuthToken: function() {
       service.authToken = null;
-      store.remove('authToken');
+      store.remove('authToken'  );
     }
   };
 
