@@ -1,7 +1,12 @@
 <ion-view view-title="Issue List">
     <ion-content>
+      <div class="button-bar">
+        <a class="button">New</a>
+        <a class="button">In Progress</a>
+        <a ng-click="issuesCtrl.toggleOrder()" class="button">Mine</a>
+      </div>
       <div>
-        <ion-list show-reorder="issuesCtrl.shouldShowReorder" ng-controller="IssuesCtrl as issuesCtrl">
+        <ion-list>
           <ion-item class="item-avatar" ui-sref="issueDetails({id: issue.id})" ng-repeat="issue in issuesCtrl.issues">
               <img ng-src="{{issue.imageUrl}}">
               <h2 class="positive">{{issue.description}}</h2>
