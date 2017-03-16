@@ -22,7 +22,8 @@ angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUr
 
   $http({
     method: 'GET',
-    url: apiUrl + '/issues'
+    url: apiUrl + '/issues',
+    params: {pageSize: 50}
   }).then(function(result) {
     //console.log(result);
     createMarkers(result.data);
@@ -38,12 +39,28 @@ angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUr
     }
   }
 
-  //$scope.$on('leafletDirectiveMap.dragend', function(event, map){
-  //});
+  $scope.$on('leafletDirectiveMap.dragend', function(event, map){
+    $http({
+      method: 'GET',
+      url: apiUrl + '/issues',
+      params: {
+        page: 2,
+        pageSize: 50
+      }
+    }).then(function(result) {
+      //console.log(result);
+      createMarkers(result.data);
+      console.log(mapCtrl.locations);
+    });
+  });
+  
+  //mapCtrl.goToIssueDetails = function(isssue) {
+    //$state.go('tab.issueDetailsMap({ issueId: issue.id })');
+    //};
 
   $scope.$on('leafletDirectiveMarker.click', function(event, marker) {
     var coords = marker.model.lng + '/' + marker.model.lat;
-    $state.go('tab.issueDetailsMap({ issueId: issue.id })');
+
     console.log('Marker at ' + coords + ' was clicked');
   });
 
