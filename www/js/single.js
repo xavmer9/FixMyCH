@@ -13,6 +13,7 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
     console.log("test");
     getIssue(id).then(function(issue) {
       console.log(issue);
+      $scope.issue = issue;
     });
     
     console.log("test");
@@ -35,11 +36,9 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
     }).catch(function() {
 
       // If an error occurs, hide the loading message and show an error message.
-      console.log("test3422332324");
+      console.log("error no such issue");
       
     });
-
-      //retourner le résultat
     
   }
 
