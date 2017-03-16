@@ -13,6 +13,11 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
     console.log("test");
     getIssue(id).then(function(issue) {
       console.log(issue);
+      $scope.issue = issue;
+    });
+    getIssueComments(id).then(function(comments) {
+      
+      $scope.comments = comments;
     });
     
     console.log("test");
@@ -35,11 +40,31 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
     }).catch(function() {
 
       // If an error occurs, hide the loading message and show an error message.
-      console.log("test3422332324");
+      console.log("error no such issue");
       
     });
+    
+  }
 
-      //retourner le résultat
+  function getIssueComments(id){
+    // requete get
+    // creation du resultat ou pas?
+      
+    return $http({
+      method: 'GET',
+      url: apiUrl+'/issues/'+id+'/comments?include=author',
+      
+    }).then(function(res) {
+
+      // If successful, give the token to the authentication service.
+     return res.data;
+
+    }).catch(function() {
+
+      // If an error occurs, hide the loading message and show an error message.
+      console.log("error no such issue");
+      
+    });
     
   }
 

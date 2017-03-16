@@ -1,5 +1,27 @@
 <ion-view view-title="Issue Details">
   <ion-content>
-    <p>Hello! This is the issue details screen.</p>
+    <h1>Description of the issue:</h1>
+    <p>{{issue.description}}</p>
+    <img src="{{issue.imageUrl}}">
+
+    <h2>Details:</h2>
+    <ul>
+    	<li>Created at: {{issue.createdAt}}</li>
+    	<li>State: {{issue.state}}</li>
+    	
+    </ul>
+    <h2>Tags:</h2>
+    <ul>
+    	<li ng-repeat="Tag in issue.tags">
+		    {{Tag}}
+		</li>
+    </ul>
+    <h2>Comments:</h2>
+    <ul>
+    	<li ng-repeat="Comment in comments">
+		    {{Comment.text}}
+		</li>
+    </ul>
   </ion-content>
 </ion-view>
+
