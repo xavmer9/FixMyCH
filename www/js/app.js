@@ -5,7 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('citizen-engagement', [
   'ionic',
-  'angular-storage'
+  'angular-storage',
+  'geolocation',
+  'leaflet-directive'
 ]);
 
 angular.module('citizen-engagement').run(function($ionicPlatform) {
@@ -64,7 +66,9 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
       url: '/issueMap',
       views: {
         'tab-issueMap': {
-          templateUrl: 'templates/issueMap.html'
+          templateUrl: 'templates/issueMap.html',
+          controller: 'MapCtrl',
+          controllerAs: 'mapCtrl'
         }
       }
     })
