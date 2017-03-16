@@ -1,4 +1,4 @@
-<ion-view view-title="Citizen Engagement">
+<ion-view view-title="Register">
   <ion-content class="padding">
 
     <!-- A banner. Choose an image and save it as www/img/banner.jpg -->
@@ -12,16 +12,28 @@
     </div>
 
     <!-- The login form that the citizen must fill. -->
-    <form name="loginForm">
+    <form name="registerForm">
 
       <!-- Ionic uses lists to group related input elements. -->
       <div class="list">
         <label class="item item-input">
           <!-- Note the required="required" attribute used for validation. -->
-          <input type="text" placeholder="Username" ng-model="loginCtrl.user.name" required />
+          <input type="text" placeholder="User Name" ng-model="registerCtrl.user.name" required />
         </label>
         <label class="item item-input">
-          <input type="password" placeholder="Password" ng-model="loginCtrl.user.password" required />
+          <input type="password" placeholder="Password" ng-model="registerCtrl.user.password" required />
+        </label>
+        <label class="item item-input">
+          <input type="password" placeholder="Please confirm password" ng-model="registerCtrl.user.confirm_password" required />
+        </label>
+        <label class="item item-input">
+          <input type="text" placeholder="First name" ng-model="registerCtrl.user.firstname" required />
+        </label>
+        <label class="item item-input">
+          <input type="text" placeholder="Family name" ng-model="registerCtrl.user.lastname" required />
+        </label>
+        <label class="item item-input">
+          <input type="text" placeholder="Numéro de téléphone" ng-model="registerCtrl.user.phone" />
         </label>
       </div>
 
@@ -33,8 +45,7 @@
         The "ng-click" directive indicates which scope function to call when the form is submitted.
         The "ng-disabled" directive is used to disable the button if the form is invalid (i.e. the first name or last name is missing).
       -->
-      <button class="button button-full button-positive" ng-click="loginCtrl.logIn()" ng-disabled="loginForm.$invalid">Log in</button>
-      <button class="button button-full button-positive" ui-sref="register" ng-disabled="">Create an account</button>
+      <button class="button button-full button-positive" ng-click="registerCtrl.register()" ng-disabled="">Become a better citizen</button>
     </form>
   </ion-content>
 </ion-view>
