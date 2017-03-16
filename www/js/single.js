@@ -15,6 +15,10 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
       console.log(issue);
       $scope.issue = issue;
     });
+    getIssueComments(id).then(function(comments) {
+      
+      $scope.comments = comments;
+    });
     
     console.log("test");
   });
@@ -27,6 +31,28 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
     return $http({
       method: 'GET',
       url: apiUrl+'/issues/'+id,
+      
+    }).then(function(res) {
+
+      // If successful, give the token to the authentication service.
+     return res.data;
+
+    }).catch(function() {
+
+      // If an error occurs, hide the loading message and show an error message.
+      console.log("error no such issue");
+      
+    });
+    
+  }
+
+  function getIssueComments(id){
+    // requete get
+    // creation du resultat ou pas?
+      
+    return $http({
+      method: 'GET',
+      url: apiUrl+'/issues/'+id+'/comments',
       
     }).then(function(res) {
 
