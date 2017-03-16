@@ -52,7 +52,7 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
       
     return $http({
       method: 'GET',
-      url: apiUrl+'/issues/'+id+'/comments',
+      url: apiUrl+'/issues/'+id+'/comments?include=author',
       
     }).then(function(res) {
 
