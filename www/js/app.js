@@ -90,17 +90,18 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
     })
 
     // This is the issue details state.
-    .state('tab.issueDetails', {
+    .state('issueDetails', {
       // We use a parameterized route for this state.
       // That way we'll know which issue to display the details of.
       url: '/issueDetails/:issueId',
-      views: {
+      controller: 'SingleCtrl',
+      controllerAs: 'singleCtrl',
+
         // Here we use the same "tab-issueList" view as the previous state.
         // This means that the issue details template will be displayed in the same tab as the issue list.
-        'tab-issueList': {
-          templateUrl: 'templates/issueDetails.html'
-        }
-      }
+
+      templateUrl: 'templates/issueDetails.html'
+
     })
 
     .state('login', {
@@ -132,7 +133,7 @@ angular.module('citizen-engagement').run(function(AuthService, $rootScope, $stat
   $rootScope.$on('$stateChangeStart', function(event, toState) {
 
     // If the user is not logged in and is trying to access another state than "login"...
-    if (!AuthService.authToken && toState.name != 'login') {
+    if (!AuthService.authToken && toState.name != 'login' && toState.name != 'register') {
 
       // ... then cancel the transition and go to the "login" state instead.
       event.preventDefault();

@@ -1,5 +1,8 @@
 angular.module('citizen-engagement').controller('RegisterCtrl', function(apiUrl, AuthService, $http, $ionicHistory, $ionicLoading, $scope, $state) {
     var registerCtrl = this;
+    registerCtrl.user = {
+      roles: ["citizen"]
+    };
 
     registerCtrl.register = function() {
 
@@ -19,8 +22,6 @@ angular.module('citizen-engagement').controller('RegisterCtrl', function(apiUrl,
             },
             data: registerCtrl.user
         }
-
-        console.log(registerCtrl.user);
 
         $http(req).then(function(res) {
 

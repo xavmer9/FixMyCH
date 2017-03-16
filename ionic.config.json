@@ -4,7 +4,7 @@
   "proxies": [
     {
       "path": "/api-proxy",
-      "proxyUrl": "https://comem-citizen-engagement-2017e.herokuapp.com"
+      "proxyUrl": "https://comem-citizen-engagement-2017e.herokuapp.com/api"
     }
   ]
 }
