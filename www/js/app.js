@@ -80,6 +80,15 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
       }
     })
 
+    .state('tab.register', {
+      url: '/register',
+      views: {
+        'tab-register': {
+          templateUrl: 'templates/register.html'
+        }
+      }
+    })
+
     // This is the issue details state.
     .state('tab.issueDetails', {
       // We use a parameterized route for this state.
@@ -100,6 +109,13 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
       controllerAs: 'loginCtrl',
       templateUrl: 'templates/login.html'
     })
+
+    .state('register', {
+       url: '/register',
+       controller: 'RegisterCtrl',
+       controllerAs: 'registerCtrl',
+       templateUrl: 'templates/register.html'
+     })
   ;
 
   // Define the default state (i.e. the first screen displayed when the app opens).
