@@ -7,7 +7,7 @@
       </div>
       <div>
         <ion-list>
-          <ion-item class="item-avatar" ui-sref="issueDetails({ issueId: issue.id })" ng-repeat="issue in issuesCtrl.issues">
+          <ion-item class="item-avatar" ui-sref="tab.issueDetailsList({ issueId: issue.id })" ng-repeat="issue in issuesCtrl.issues">
               <img ng-src="{{issue.imageUrl}}">
               <h2 class="positive">{{issue.description}}</h2>
               <p>{{issue.state}}</p>
