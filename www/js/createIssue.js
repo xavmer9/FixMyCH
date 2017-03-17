@@ -87,8 +87,8 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
           "imageUrl": createCtrl.img,
           "location": {
             "coordinates": [
-              x,
-              y
+              y,
+              x
             ],
             "type": "Point"
           },
