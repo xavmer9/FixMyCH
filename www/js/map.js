@@ -1,4 +1,4 @@
-angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUrl, geolocation, $log, $scope, $state, leafletData) {
+angular.module('citizen-engagement').controller('MapCtrl', function(IssueService, $http, apiUrl, geolocation, $log, $scope, $state, leafletData) {
   var mapCtrl = this;
 
   //geolocation: get position of the user
@@ -18,18 +18,34 @@ angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUr
     zoom: 14
   };
 
+  IssueService.getIssues().then(function(issues) {
+    console.log(issues);
+    //issueCtrl.issues = issues;
+    createMarkers(issues);
+  })
+
   //get all issues from user's location
+  /*
   $http({
-    method: 'GET', //post
-    url: apiUrl + '/issues',
-    params: {pageSize: 50}
-  }).then(function(result) {
-    //console.log(result);
-    createMarkers(result.data);
-    console.log(mapCtrl.locations);
+  method: 'GET', //post
+  url: apiUrl + '/issues',
+  params: {pageSize: 50}
+}).then(function(result) {
+//console.log(result);
+createMarkers(result.data);
+//console.log(mapCtrl.locations);
+});
+
+*/
+
+leafletData.getMap().then(function(map) {
+  map.on('click', function(e) {
+    console.log("Latitude : " + e.latlng.lat + " Longitude :  "+ e.latlng.lng);
   });
+});
 
   function createMarkers (issues) {
+    console.log(issues);
     for(var i=0; i<issues.length; i++){
       mapCtrl.markers.push({
         lat: issues[i].location.coordinates[1],
@@ -39,14 +55,19 @@ angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUr
     }
   }
 
-  //leafletData.getMap().then
-
   $scope.$on('leafletDirectiveMap.dragend', function(event, map){
     $http({
       method: 'POST',
       url: apiUrl + '/issues/searches',
       data: {
-
+        "location": {
+          "$geoWithin": {
+            "$centerSphere" : [
+              [ 6.622009 , 46.766129 ],
+              0.1
+            ]
+          }
+        }
       }
     }).then(function(result) {
       //console.log(result);
