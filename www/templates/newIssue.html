@@ -20,11 +20,23 @@
 	        <label class="item item-input">
 	          <input type="text" placeholder="Image url" ng-model="createCtrl.img" />
 	        </label>
-	        <select ng-model="createCtrl.issue_type" ng-options="type as (type.description + ' - ' + type.name) for type in createCtrl.issueTypes">
-	        <option value="">-- please choose a type --</option>
+	        <label class="item item-input">
+		        <select ng-model="createCtrl.issue_type" ng-options="type as (type.description + ' - ' + type.name) for type in createCtrl.issueTypes">
+		        	<option value="">-- please choose a type --</option>
+		        </select>
+		    </label>
 
-	      </select>
-	        
+	    
+		    <label class="item item-input">
+		    	<button type='button button-positive' ng-click='createCtrl.takePicture()'>
+				  Take picture
+				</button>
+				<img ng-if='createCtrl.pictureData' width='100%'
+				     ng-src='data:image/png;base64,{{ createCtrl.pictureData }}' />
+		     </label>
+
+	      
+				        
 	      </div>
 
 	      <!-- Display an error message here, above the submit button, if an error occurred. -->

@@ -1,4 +1,26 @@
-angular.module('citizen-engagement').controller('CreateCtrl', function($stateParams, $http, $scope, $state, apiUrl, geolocation) {
+angular.module('citizen-engagement').factory('CameraService', function($q) {
+  var service = {
+    isSupported: function() {
+      return navigator.camera !== undefined;
+    },
+    getPicture: function() {
+      var deferred = $q.defer();
+      var options = { // Return the raw base64 PNG data
+        destinationType: navigator.camera.DestinationType.DATA_URL,
+        correctOrientation: true
+      };
+      navigator.camera.getPicture(function(result) {
+        deferred.resolve(result);
+      }, function(err) {
+        deferred.reject(err);
+      }, options);
+      return deferred.promise;
+    }
+  };
+  return service;
+});
+
+angular.module('citizen-engagement').controller('CreateCtrl', function($stateParams, $ionicPopup, $http, $scope, $state, CameraService, $log, apiUrl, geolocation) {
   // The $ionicView.beforeEnter event happens every time the screen is displayed.
   var createCtrl = this;
   $scope.$on('$ionicView.beforeEnter', function() {
@@ -13,6 +35,27 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
 
   });
 
+  createCtrl.takePicture = function() {
+
+    if (!CameraService.isSupported()) {
+      return $ionicPopup.alert({
+        title: 'Not supported',
+        template: 'You cannot use the camera on this platform'
+      });
+    }
+
+    CameraService.getPicture().then(function(result) {
+      $log.debug('Picture taken!');
+      createCtrl.pictureData = result;
+
+      
+      
+
+
+    }).catch(function(err) {
+      $log.error('Could not get picture because: ' + err.message);
+    });
+  };
   
 
   createCtrl.createIssue = function(){
@@ -57,6 +100,9 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
         // If successful, give the token to the authentication service.
        
        console.log(res);
+       createCtrl.img ="";
+       createCtrl.description ="";
+       createCtrl.tags ="";
        return res.data;
 
       }).catch(function() {
@@ -75,7 +121,4 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
       
   }
 
-
-  
-  
 });
