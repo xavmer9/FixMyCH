@@ -1,5 +1,3 @@
-console.log("test");
-
 angular.module('citizen-engagement').controller('CreateCtrl', function($stateParams, $http, $scope, $state, apiUrl) {
   // The $ionicView.beforeEnter event happens every time the screen is displayed.
   var createCtrl = this;
@@ -13,18 +11,21 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
 
   
 
-  singleCtrl.createIssue = function(){
+  createCtrl.createIssue = function(){
       // requete get
       // creation du resultat ou pas?
 
         
       return $http({
         method: 'POST',
-        url: apiUrl+'/issues/'+$scope.issue.id+'/comments',
+        url: apiUrl+'/issues',
         headers: {
           'Content-Type': 'application/json'
         },
-        data: {"text": singleCtrl.comment},
+        data: {
+          "description": createCtrl.comment,
+          
+      },
         params: {include: 'author'}
         
       }).then(function(res) {
@@ -33,11 +34,11 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
        
        $scope.comments.push(res.data);
        console.log(res);
-       singleCtrl.comment ="";
+       createCtrl.comment ="";
        return res.data;
 
       }).catch(function() {
-        singleCtrl.comment.error = "Please you have to add some content to your comment";
+        createCtrl.comment.error = "Please you have to add some content to your comment";
         // If an error occurs, hide the loading message and show an error message.
         
         
