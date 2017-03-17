@@ -12,26 +12,30 @@
 	      <div class="list">
 	       
 	        <label class="item item-input">
-	          <input type="text" placeholder="Description" ng-model="singleCtrl.issue.description" required />
+	          <input type="text" placeholder="Description" ng-model="createCtrl.description" required />
 	        </label>
 	        <label class="item item-input">
-	          <input type="text" placeholder="Tags, put tags seperated by a space and coma" ng-model="singleCtrl.issue.tags" required />
+	          <input type="text" placeholder="Tags, put tags seperated by a space and coma" ng-model="createCtrl.tags" />
 	        </label>
 	        <label class="item item-input">
-	          <input type="text" placeholder="Place (we use your geolocation please validate or refresh" ng-model="singleCtrl.issue.geo" required />
+	          <input type="text" placeholder="Image url" ng-model="createCtrl.img" />
 	        </label>
+	        <select ng-model="createCtrl.issue_type" ng-options="type as (type.description + ' - ' + type.name) for type in createCtrl.issueTypes">
+	        <option value="">-- please choose a type --</option>
+
+	      </select>
 	        
 	      </div>
 
 	      <!-- Display an error message here, above the submit button, if an error occurred. -->
-	      <p ng-if="singleCtrl.addIssue.error" class="error">{{ singleCtrl.addIssue.error }}</p>
+	      <p ng-if="createCtrl.createIssue.error" class="error">{{ createCtrl.createIssue.error }}</p>
 
 	      <!--
 	        The submit button.
 	        The "ng-click" directive indicates which scope function to call when the form is submitted.
 	        The "ng-disabled" directive is used to disable the button if the form is invalid (i.e. the first name or last name is missing).
 	      -->
-	      <button class="button button-full button-positive" ng-click="singleCtrl.createIssue()" ng-disabled="">Create your issue</button>
+	      <button class="button button-full button-positive" ng-click="createCtrl.createIssue()" ng-disabled="">Create your issue</button>
 	    </form>
       </div>
   </ion-content>
