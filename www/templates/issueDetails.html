@@ -1,27 +1,80 @@
 <ion-view view-title="Issue Details">
-  <ion-content>
-    <h1>Description of the issue:</h1>
-    <p>{{issue.description}}</p>
-    <img src="{{issue.imageUrl}}">
+  <ion-content class="padding">
+    <div class="card">
+      <div class="item item-text-wrap">
+        <h1>Description of the issue:</h1>
+      </div>
+      <div class="item item-text-wrap">
+        <p>{{issue.description}}</p>
+      </div>
+      <div class="item item-text-wrap">
+       <img src="{{issue.imageUrl}}">
+      </div>
+       
+    </div>
+  
+    <div class="card">
+      <div class="item item-text-wrap">
+       	<h2>Details:</h2>
+       	<ul>
+	    	<li>Created at: {{issue.createdAt}}</li>
+	    	<li>State: {{issue.state}}</li>
+	    	
+	    </ul>
+      </div>
+      <div class="item item-text-wrap">
+        <h2>Tags:</h2>
+	    <ul>
+	    	<li ng-repeat="Tag in issue.tags">
+			    {{Tag}}
+			</li>
+	    </ul>
+      </div>
+      
+       
+    </div>
+    <div class="card">
+      
+      <div class="item item-text-wrap">
+        <h2>Comments:</h2>
+	    <ul>
+	    	<li ng-repeat="Comment in comments">
+			    {{Comment.author.firstname}}: {{Comment.text}}
+			    <br> 
+			    <br>
+			    
+			</li>
+		
+      </div>
+      <div class="item item-text-wrap">
+        <h2>Add your comment:</h2>
+	    <!-- The login form that the citizen must fill. -->
+	    <form name="commentForm">
 
-    <h2>Details:</h2>
-    <ul>
-    	<li>Created at: {{issue.createdAt}}</li>
-    	<li>State: {{issue.state}}</li>
-    	
-    </ul>
-    <h2>Tags:</h2>
-    <ul>
-    	<li ng-repeat="Tag in issue.tags">
-		    {{Tag}}
-		</li>
-    </ul>
-    <h2>Comments:</h2>
-    <ul>
-    	<li ng-repeat="Comment in comments">
-		    {{Comment.text}}
-		</li>
-    </ul>
+	      <!-- Ionic uses lists to group related input elements. -->
+	      <div class="list">
+	       
+	        <label class="item item-input">
+	          <input type="text" placeholder="Your Comment" ng-model="singleCtrl.comment" required />
+	        </label>
+	        
+	      </div>
+
+	      <!-- Display an error message here, above the submit button, if an error occurred. -->
+	      <p ng-if="singleCtrl.error" class="error">{{ singleCtrl.error }}</p>
+
+	      <!--
+	        The submit button.
+	        The "ng-click" directive indicates which scope function to call when the form is submitted.
+	        The "ng-disabled" directive is used to disable the button if the form is invalid (i.e. the first name or last name is missing).
+	      -->
+	      <button class="button button-full button-positive" ng-click="singleCtrl.addComment()" ng-disabled="">Add your comment</button>
+	    </form>
+      </div>
+      
+       
+    </div>
+
   </ion-content>
 </ion-view>
 

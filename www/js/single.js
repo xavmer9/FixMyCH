@@ -19,8 +19,17 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
       
       $scope.comments = comments;
     });
+
+    //get current logged user so when he adds a comment we know who he is
+    getCurrentUser().then(function(user) {
+      
+      $scope.user = user;
+      console.log("testuser");
+      console.log($scope.user);
+    });
     
-    console.log("test");
+    
+
   });
 
   function getIssue(id){
@@ -68,6 +77,57 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
     
   }
 
-  // Add the register function to the scope.
+  singleCtrl.addComment = function(){
+    // requete get
+    // creation du resultat ou pas?
+
+      
+    return $http({
+      method: 'POST',
+      url: apiUrl+'/issues/'+$scope.issue.id+'/comments',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: {"text": singleCtrl.comment},
+      params: {include: 'author'}
+      
+    }).then(function(res) {
+
+      // If successful, give the token to the authentication service.
+     
+     $scope.comments.push(res.data);
+     console.log(res);
+     singleCtrl.comment ="";
+     return res.data;
+
+    }).catch(function(error) {
+      singleCtrl.error = error;
+      // If an error occurs, hide the loading message and show an error message.
+      console.log("error, plaese put error content");
+      
+    });
+    
+  }
+  function getCurrentUser(){
+    // requete get
+      
+    return $http({
+      method: 'GET',
+      url: apiUrl+'/me',
+      
+    }).then(function(res) {
+
+      // If successful, give the token to the authentication service.
+     return res.data;
+
+    }).catch(function() {
+
+      console.log("error no user found");
+      
+    });
+    
+  }
+
+  
   
 });
