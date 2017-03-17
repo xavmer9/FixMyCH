@@ -15,11 +15,15 @@
 	          <input type="text" placeholder="Description" ng-model="createCtrl.description" required />
 	        </label>
 	        <label class="item item-input">
-	          <input type="text" placeholder="Tags, put tags seperated by a space and coma" ng-model="createCtrl.tags" required />
+	          <input type="text" placeholder="Tags, put tags seperated by a space and coma" ng-model="createCtrl.tags" />
 	        </label>
 	        <label class="item item-input">
-	          <tags-input type="text" placeholder="Place (we use your geolocation please validate or refresh" ng-model="createCtrl.geo" required />
+	          <input type="text" placeholder="Image url" ng-model="createCtrl.img" />
 	        </label>
+	        <select ng-model="createCtrl.issue_type" ng-options="type as (type.description + ' - ' + type.name) for type in createCtrl.issueTypes">
+	        <option value="">-- please choose a type --</option>
+
+	      </select>
 	        
 	      </div>
 

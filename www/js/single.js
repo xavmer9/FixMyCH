@@ -109,37 +109,6 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
     
   }
 
-  singleCtrl.createIssue = function(){
-      // requete get
-      // creation du resultat ou pas?
-
-        
-      return $http({
-        method: 'POST',
-        url: apiUrl+'/issues/'+$scope.issue.id+'/comments',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        data: {"text": singleCtrl.comment},
-        params: {include: 'author'}
-        
-      }).then(function(res) {
-
-        // If successful, give the token to the authentication service.
-       
-       $scope.comments.push(res.data);
-       console.log(res);
-       singleCtrl.comment ="";
-       return res.data;
-
-      }).catch(function() {
-        singleCtrl.comment.error = "Please you have to add some content to your comment";
-        // If an error occurs, hide the loading message and show an error message.
-        
-        
-      });
-      
-  }
 
   function getCurrentUser(){
     // requete get
