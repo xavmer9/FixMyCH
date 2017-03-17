@@ -3,6 +3,36 @@
     <button type="button" ng-controller="LogoutCtrl as logoutCtrl" ng-click="logoutCtrl.logOut()" class="button">Log Out</button>
   </ion-nav-buttons>
   <ion-content>
-    <p>Hello! This is the issue creation screen.</p>
+     <div class="item item-text-wrap">
+        <h1>Add your Issue:</h1>
+	    <!-- The login form that the citizen must fill. -->
+	    <form name="commentForm">
+
+	      <!-- Ionic uses lists to group related input elements. -->
+	      <div class="list">
+	       
+	        <label class="item item-input">
+	          <input type="text" placeholder="Description" ng-model="singleCtrl.issue.description" required />
+	        </label>
+	        <label class="item item-input">
+	          <input type="text" placeholder="Tags, put tags seperated by a space and coma" ng-model="singleCtrl.issue.tags" required />
+	        </label>
+	        <label class="item item-input">
+	          <input type="text" placeholder="Place (we use your geolocation please validate or refresh" ng-model="singleCtrl.issue.geo" required />
+	        </label>
+	        
+	      </div>
+
+	      <!-- Display an error message here, above the submit button, if an error occurred. -->
+	      <p ng-if="singleCtrl.addIssue.error" class="error">{{ singleCtrl.addIssue.error }}</p>
+
+	      <!--
+	        The submit button.
+	        The "ng-click" directive indicates which scope function to call when the form is submitted.
+	        The "ng-disabled" directive is used to disable the button if the form is invalid (i.e. the first name or last name is missing).
+	      -->
+	      <button class="button button-full button-positive" ng-click="singleCtrl.createIssue()" ng-disabled="">Create your issue</button>
+	    </form>
+      </div>
   </ion-content>
 </ion-view>
