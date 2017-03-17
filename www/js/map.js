@@ -1,4 +1,4 @@
-angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUrl, geolocation, $log, $scope, $state) {
+angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUrl, geolocation, $log, $scope, $state, leafletData) {
   var mapCtrl = this;
 
   //geolocation: get position of the user
@@ -21,8 +21,8 @@ angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUr
   };
 
   $http({
-    method: 'GET',
-    url: apiUrl + '/issues',
+    method: 'GET', //post
+    url: apiUrl + '/issues',//searches mongodb geoWithin leaflet docs getmap leafletData.getMap().then()
     params: {pageSize: 50}
   }).then(function(result) {
     //console.log(result);
@@ -34,7 +34,8 @@ angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUr
     for(var i=0; i<issues.length; i++){
         mapCtrl.markers.push({
         lat: issues[i].location.coordinates[1],
-        lng: issues[i].location.coordinates[0]
+        lng: issues[i].location.coordinates[0],
+        issue: issues[i]
       });
     }
   }
@@ -53,15 +54,10 @@ angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUr
       console.log(mapCtrl.locations);
     });
   });
-  
-  //mapCtrl.goToIssueDetails = function(isssue) {
-    //$state.go('tab.issueDetailsMap({ issueId: issue.id })');
-    //};
 
   $scope.$on('leafletDirectiveMarker.click', function(event, marker) {
-    var coords = marker.model.lng + '/' + marker.model.lat;
-
-    console.log('Marker at ' + coords + ' was clicked');
+    console.log(marker.model.issue);
+    $state.go('tab.issueDetailsMap', {id: marker.model.issue.id});
   });
 
 });
