@@ -5,8 +5,6 @@ angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUr
   geolocation.getLocation().then(function(data){
     mapCtrl.center.lat = data.coords.latitude;
     mapCtrl.center.lng = data.coords.longitude;
-    console.log(mapCtrl.latitude);
-    console.log(mapCtrl.longitude);
   }).catch(function(err) {
     $log.error('Could not get location because: ' + err.message);
   });
@@ -20,9 +18,10 @@ angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUr
     zoom: 14
   };
 
+  //get all issues from user's location
   $http({
     method: 'GET', //post
-    url: apiUrl + '/issues',//searches mongodb geoWithin leaflet docs getmap leafletData.getMap().then()
+    url: apiUrl + '/issues',
     params: {pageSize: 50}
   }).then(function(result) {
     //console.log(result);
@@ -32,7 +31,7 @@ angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUr
 
   function createMarkers (issues) {
     for(var i=0; i<issues.length; i++){
-        mapCtrl.markers.push({
+      mapCtrl.markers.push({
         lat: issues[i].location.coordinates[1],
         lng: issues[i].location.coordinates[0],
         issue: issues[i]
@@ -40,13 +39,14 @@ angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUr
     }
   }
 
+  //leafletData.getMap().then
+
   $scope.$on('leafletDirectiveMap.dragend', function(event, map){
     $http({
-      method: 'GET',
-      url: apiUrl + '/issues',
-      params: {
-        page: 2,
-        pageSize: 50
+      method: 'POST',
+      url: apiUrl + '/issues/searches',
+      data: {
+
       }
     }).then(function(result) {
       //console.log(result);
@@ -55,9 +55,10 @@ angular.module('citizen-engagement').controller('MapCtrl', function($http, apiUr
     });
   });
 
+  //Redirect to issueDetails
   $scope.$on('leafletDirectiveMarker.click', function(event, marker) {
     console.log(marker.model.issue);
-    $state.go('tab.issueDetailsMap', {id: marker.model.issue.id});
+    $state.go('tab.issueDetailsMap', {issueId: marker.model.issue.id});
   });
 
 });

@@ -1,25 +1,39 @@
-angular.module('citizen-engagement').controller('IssuesCtrl', function($http, apiUrl, geolocation, $log) {
-    var issuesCtrl = this;
-    issuesCtrl.issues = [];
+angular.module('citizen-engagement').factory('IssueService', function($http, apiUrl) {
+  var service = {};
 
-    //geolocation stuff
-    geolocation.getLocation().then(function(data){
-    issuesCtrl.latitude = data.coords.latitude;
-    issuesCtrl.longitude = data.coords.longitude;
-      }).catch(function(err) {
-        $log.error('Could not get location because: ' + err.message);
-        });
-
-    function toggleOrder(){
-      console.log("wo<a");
-    }
-
-    $http({
+  //Get all issues
+  service.getIssues = function(page, items) {
+    page = page || 1; // Start from page 1
+    items = items || [];
+    // GET the current page
+    return $http({
       method: 'GET',
-      url: apiUrl + '/issues'
-    }).then(function(result) {
-      //console.log(result);
-      issuesCtrl.issues = result.data;
-      console.log(issuesCtrl.issues);
+      url: apiUrl + '/issues',
+      params: {
+        page: page
+      }
+    }).then(function(res) {
+      if (res.data.length) {
+        // If there are any items, add them
+        // and recursively fetch the next page
+        items = items.concat(res.data);
+        return service.getIssues(page + 1, items);
+      }
+      return items;
     });
-  });
+  };
+
+  return service;
+
+});
+
+angular.module('citizen-engagement').controller('IssuesCtrl', function(IssueService) {
+  var issueCtrl = this;
+
+  IssueService.getIssues().then(function(issues) {
+    console.log(issues);
+    issueCtrl.issues = issues;
+  })
+
+
+});
