@@ -23,7 +23,7 @@ angular.module('citizen-engagement').controller('MapCtrl', function(IssueService
   mapCtrl.center = {
     lat: 51.48,
     lng: 0,
-    zoom: 13
+    zoom: 15
   };
 
   IssueService.getIssues().then(function(issues) {
@@ -32,23 +32,14 @@ angular.module('citizen-engagement').controller('MapCtrl', function(IssueService
     createMarkers(issues);
   })
 
-  //get all issues from user's location
-  /*
-  $http({
-  method: 'GET', //post
-  url: apiUrl + '/issues',
-  params: {pageSize: 50}
-}).then(function(result) {
-//console.log(result);
-createMarkers(result.data);
-//console.log(mapCtrl.locations);
-});
-
-*/
-
 leafletData.getMap().then(function(map) {
-  map.on('click', function(e) {
-    console.log("Latitude : " + e.latlng.lat + " Longitude :  "+ e.latlng.lng);
+  map.on('load', function(e) {
+    console.log('woplaaaaaaa');
+    mapCtrl.center = {
+      lat: e.latlng.lat,
+      lng: e.latlng.lng,
+      zoom: 15
+    };
   });
 });
 
