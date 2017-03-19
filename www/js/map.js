@@ -1,4 +1,4 @@
-angular.module('citizen-engagement').controller('MapCtrl', function(IssueService, $http, apiUrl, geolocation, $log, $scope, $state, leafletData) {
+angular.module('citizen-engagement').controller('MapCtrl', function(IssueService, $http, apiUrl, mapboxSecret, geolocation, $log, $scope, $state, leafletData) {
   var mapCtrl = this;
 
   //geolocation: get position of the user
@@ -10,12 +10,20 @@ angular.module('citizen-engagement').controller('MapCtrl', function(IssueService
   });
 
   //map
-  mapCtrl.defaults = {};
+  var mapboxMapId = 'mapbox.satellite';  // Use your favorite tileset here
+  // Build the tile layer URL
+  var mapboxTileLayerUrl = 'http://api.tiles.mapbox.com/v4/' + mapboxMapId;
+  mapboxTileLayerUrl = mapboxTileLayerUrl + '/{z}/{x}/{y}.png';
+  mapboxTileLayerUrl = mapboxTileLayerUrl + '?access_token=' + mapboxSecret;
+
+  mapCtrl.defaults = {
+      tileLayer: mapboxTileLayerUrl
+    };
   mapCtrl.markers = [];
   mapCtrl.center = {
     lat: 51.48,
     lng: 0,
-    zoom: 14
+    zoom: 13
   };
 
   IssueService.getIssues().then(function(issues) {

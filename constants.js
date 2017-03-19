@@ -1,4 +1,4 @@
 angular.module('citizen-engagement')
   .constant('apiUrl', '@apiUrl@')
-  .constant('apiUrl', '@mapboxSecret@')
+  .constant('mapboxSecret', '@mapboxSecret@')
 ;
