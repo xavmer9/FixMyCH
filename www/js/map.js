@@ -1,16 +1,8 @@
 angular.module('citizen-engagement').controller('MapCtrl', function(IssueService, $http, apiUrl, mapboxSecret, geolocation, $log, $scope, $state, leafletData) {
   var mapCtrl = this;
 
-  //geolocation: get position of the user
-  geolocation.getLocation().then(function(data){
-    mapCtrl.center.lat = data.coords.latitude;
-    mapCtrl.center.lng = data.coords.longitude;
-  }).catch(function(err) {
-    $log.error('Could not get location because: ' + err.message);
-  });
-
-  //map
-  var mapboxMapId = 'mapbox.satellite';  // Use your favorite tileset here
+  //create the map
+  var mapboxMapId = 'mapbox.satellite';  // define mapbox tileset
   // Build the tile layer URL
   var mapboxTileLayerUrl = 'http://api.tiles.mapbox.com/v4/' + mapboxMapId;
   mapboxTileLayerUrl = mapboxTileLayerUrl + '/{z}/{x}/{y}.png';
@@ -23,8 +15,16 @@ angular.module('citizen-engagement').controller('MapCtrl', function(IssueService
   mapCtrl.center = {
     lat: 51.48,
     lng: 0,
-    zoom: 15
+    zoom: 14
   };
+
+  //geolocation: get position of the user
+  geolocation.getLocation().then(function(data){
+  mapCtrl.center.lat = data.coords.latitude;
+  mapCtrl.center.lng = data.coords.longitude;
+  }).catch(function(err) {
+    $log.error('Could not get location because: ' + err.message);
+  });
 
   IssueService.getIssues().then(function(issues) {
     console.log(issues);

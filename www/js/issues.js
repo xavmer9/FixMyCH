@@ -33,7 +33,7 @@ angular.module('citizen-engagement').controller('IssuesCtrl', function(IssueServ
   IssueService.getIssues().then(function(issues) {
     console.log(issues);
     issueCtrl.issues = issues;
-  })
+  });
 
 
 });
