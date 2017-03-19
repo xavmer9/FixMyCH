@@ -1,4 +1,5 @@
 angular.module('citizen-engagement').factory('CameraService', function($q) {
+  
   var service = {
     isSupported: function() {
       return navigator.camera !== undefined;
@@ -21,7 +22,7 @@ angular.module('citizen-engagement').factory('CameraService', function($q) {
 });
 
 angular.module('citizen-engagement').controller('CreateCtrl', function($stateParams, $ionicPopup, $http, $scope, $state, CameraService, $log, apiUrl, geolocation) {
-  // The $ionicView.beforeEnter event happens every time the screen is displayed.
+
   var createCtrl = this;
   $scope.$on('$ionicView.beforeEnter', function() {
 
@@ -48,9 +49,6 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
       $log.debug('Picture taken!');
       createCtrl.pictureData = result;
 
-      
-      
-
 
     }).catch(function(err) {
       $log.error('Could not get picture because: ' + err.message);
@@ -60,11 +58,8 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
 
   createCtrl.createIssue = function(){
       // requete get
-      // creation du resultat ou pas?
-      string ="test";
+    
 
-      // we split the user input seperated by coma to create the right tags
-      var tags = createCtrl.tags.split(',');
 
 
       // we get the location of the user posting the issue
@@ -72,6 +67,24 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
       geolocation.getLocation().then(function(data){
         var x = data.coords.latitude;
         var y = data.coords.longitude;
+
+        // if some optional inputs are undefined, set them to null
+
+        if(!createCtrl.description){
+          createCtrl.description ="";
+        }
+        if(!createCtrl.tags){
+          var tags=[];
+        }else{
+          // we split the user input seperated by coma to create the right tags
+
+          var tags = createCtrl.tags.split(',');
+        }
+        if(!createCtrl.img){
+          createCtrl.img ="";
+        }
+
+
 
         // we call the service to create the issue
 
@@ -97,9 +110,8 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
       }        
       }).then(function(res) {
 
-        // If successful, give the token to the authentication service.
+        // empty the form
        
-       console.log(res);
        createCtrl.img ="";
        createCtrl.description ="";
        createCtrl.tags ="";
@@ -109,15 +121,11 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
         createCtrl.error = "Please you have to add some content to your comment";
         // If an error occurs, hide the loading message and show an error message.
         
-        
       });
      
       }).catch(function(err) {
         $log.error('Could not get location because: ' + err.message);
       });
-
-      
-      
       
   }
 

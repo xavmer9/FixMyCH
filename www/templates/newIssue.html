@@ -8,17 +8,18 @@
 	    <!-- The login form that the citizen must fill. -->
 	    <form name="commentForm">
 
-	      <!-- Ionic uses lists to group related input elements. -->
+	      <!-- Ionic uses lists to group related input elements. we place restriction rules on each field when needed -->
 	      <div class="list">
 	       
 	        <label class="item item-input">
-	          <input type="text" placeholder="Description" ng-model="createCtrl.description" required />
+	          <input type="text" placeholder="Description" ng-model="createCtrl.description" ngMaxlength="1000" />
 	        </label>
 	        <label class="item item-input">
 	          <input type="text" placeholder="Tags, put tags seperated by a space and coma" ng-model="createCtrl.tags" />
 	        </label>
 	        <label class="item item-input">
-	          <input type="text" placeholder="Image url" ng-model="createCtrl.img" />
+	          <input type="url" pattern="^https?://(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|gif|png)$
+" placeholder="Image url" ngMaxlength="500" ng-model="createCtrl.img" />
 	        </label>
 	        <label class="item item-input">
 		        <select ng-model="createCtrl.issue_type" ng-options="type as (type.description + ' - ' + type.name) for type in createCtrl.issueTypes">
