@@ -9,33 +9,19 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
     // The first name and last name will be automatically filled from the form thanks to AngularJS's two-way binding.
 
     var id = $stateParams.issueId;
-    console.log(id);
-    console.log("test");
+   
     getIssue(id).then(function(issue) {
-      console.log(issue);
       $scope.issue = issue;
     });
+
     getIssueComments(id).then(function(comments) {
-      
       $scope.comments = comments;
     });
-
-    //get current logged user so when he adds a comment we know who he is
-    getCurrentUser().then(function(user) {
-      
-      $scope.user = user;
-      console.log("testuser");
-      console.log($scope.user);
-    });
-    
-    
 
   });
 
   function getIssue(id){
     // requete get
-    // creation du resultat ou pas?
-    console.log("test"+id);
       
     return $http({
       method: 'GET',
@@ -65,21 +51,15 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
       
     }).then(function(res) {
 
-      // If successful, give the token to the authentication service.
      return res.data;
 
     }).catch(function() {
 
-      // If an error occurs, hide the loading message and show an error message.
-      console.log("error no such issue");
-      
     });
     
   }
 
   singleCtrl.addComment = function(){
-    // requete get
-    // creation du resultat ou pas?
 
       
     return $http({
@@ -93,7 +73,6 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
       
     }).then(function(res) {
 
-      // If successful, give the token to the authentication service.
      
      $scope.comments.push(res.data);
 
@@ -103,29 +82,7 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
 
     }).catch(function() {
       singleCtrl.comment.error = "Please you have to add some content to your comment";
-      // If an error occurs, hide the loading message and show an error message.
       
-      
-    });
-    
-  }
-
-
-  function getCurrentUser(){
-    // requete get
-      
-    return $http({
-      method: 'GET',
-      url: apiUrl+'/me',
-      
-    }).then(function(res) {
-
-      // If successful, give the token to the authentication service.
-     return res.data;
-
-    }).catch(function() {
-
-      console.log("error no user found");
       
     });
     
