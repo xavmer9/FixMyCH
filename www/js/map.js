@@ -1,4 +1,4 @@
-angular.module('citizen-engagement').controller('MapCtrl', function(IssueService, $http, apiUrl, mapboxSecret, geolocation, $log, $scope, $state, leafletData) {
+angular.module('citizen-engagement').controller('MapCtrl', function(IssueService, $timeout, $http, apiUrl, mapboxSecret, geolocation, $log, $scope, $state, leafletData) {
   var mapCtrl = this;
 
   //create the map
@@ -15,36 +15,30 @@ angular.module('citizen-engagement').controller('MapCtrl', function(IssueService
   mapCtrl.center = {
     lat: 51.48,
     lng: 0,
-    zoom: 14
+    zoom: 16
   };
 
   //geolocation: get position of the user
   geolocation.getLocation().then(function(data){
-  mapCtrl.center.lat = data.coords.latitude;
-  mapCtrl.center.lng = data.coords.longitude;
+    mapCtrl.center.lat = data.coords.latitude;
+    mapCtrl.center.lng = data.coords.longitude;
+    $timeout(loadMarkers, 0);
   }).catch(function(err) {
     $log.error('Could not get location because: ' + err.message);
   });
 
+  /*
   IssueService.getIssues().then(function(issues) {
     console.log(issues);
     //issueCtrl.issues = issues;
     createMarkers(issues);
-  })
-
-leafletData.getMap().then(function(map) {
-  map.on('load', function(e) {
-    console.log('woplaaaaaaa');
-    mapCtrl.center = {
-      lat: e.latlng.lat,
-      lng: e.latlng.lng,
-      zoom: 15
-    };
   });
-});
 
-  function createMarkers (issues) {
-    console.log(issues);
+  */
+
+
+  //Add issues marker on the map
+  function createMarkers(issues) {
     for(var i=0; i<issues.length; i++){
       mapCtrl.markers.push({
         lat: issues[i].location.coordinates[1],
@@ -54,28 +48,20 @@ leafletData.getMap().then(function(map) {
     }
   }
 
-  $scope.$on('leafletDirectiveMap.dragend', function(event, map){
-    $http({
-      method: 'POST',
-      url: apiUrl + '/issues/searches',
-      data: {
-        "location": {
-          "$geoWithin": {
-            "$centerSphere" : [
-              [ 6.622009 , 46.766129 ],
-              0.1
-            ]
-          }
-        }
-      }
-    }).then(function(result) {
-      //console.log(result);
-      createMarkers(result.data);
-      console.log(mapCtrl.locations);
-    });
+  $scope.$on('leafletDirectiveMap.moveend', function(event, map){
+    loadMarkers();
   });
 
-  //Redirect to issueDetails
+  function loadMarkers() {
+    leafletData.getMap().then(function(map) {
+      IssueService.getIssuesByLocation(map).then(function(issues){
+        mapCtrl.markers = [];
+        createMarkers(issues);
+      });
+    });
+  }
+
+  //Redirect to issueDetails when click event on a marker
   $scope.$on('leafletDirectiveMarker.click', function(event, marker) {
     console.log(marker.model.issue);
     $state.go('tab.issueDetailsMap', {issueId: marker.model.issue.id});

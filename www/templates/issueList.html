@@ -1,9 +1,9 @@
 <ion-view view-title="Issue List">
     <ion-content>
       <div class="button-bar">
-        <a class="button">New</a>
-        <a class="button">In Progress</a>
-        <a ng-click="issueCtrl.toggleOrder()" class="button">Mine</a>
+        <a ng-click='issuesCtrl.toggleNew()' class="button" ng-class="{'button-balanced': issuesCtrl.filter == 'new'}">New</a>
+        <a ng-click='issuesCtrl.toggleInProgress()' class="button" ng-class="{'button-balanced': issuesCtrl.filter == 'inProgress'}">In Progress</a>
+        <a ng-click='issuesCtrl.toggleMine()' class="button" ng-class="{'button-balanced': issuesCtrl.filter == 'mine'}">Mine</a>
       </div>
       <div>
         <ion-list>
