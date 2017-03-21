@@ -9,7 +9,7 @@ angular.module('citizen-engagement').controller('RegisterCtrl', function(apiUrl,
 
         // Show a loading message if the request takes too long.
         $ionicLoading.show({
-            template: 'Logging in...',
+            template: 'Creating account...',
             delay: 750
         });
 
