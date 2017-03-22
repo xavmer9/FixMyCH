@@ -12,17 +12,17 @@
 	      <div class="list">
 	       
 	        <label class="item item-input">
-	          <input type="text" placeholder="Description" ng-model="createCtrl.description" ngMaxlength="1000" />
+	          <input type="text" placeholder="Description" ng-model="createCtrl.issue.description" ngMaxlength="1000" />
 	        </label>
 	        <label class="item item-input">
 	          <input type="text" placeholder="Tags, put tags seperated by a space and coma" ng-model="createCtrl.tags" />
 	        </label>
 	        <label class="item item-input">
 	          <input type="url" pattern="^https?://(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|gif|png)$
-" placeholder="Image url" ngMaxlength="500" ng-model="createCtrl.img" />
+" placeholder="Image url" ngMaxlength="500" ng-model="createCtrl.pictureData" />
 	        </label>
 	        <label class="item item-input">
-		        <select ng-model="createCtrl.issue_type" ng-options="type as (type.description + ' - ' + type.name) for type in createCtrl.issueTypes">
+		        <select ng-model="createCtrl.issue.issue_type" ng-options="type as (type.description + ' - ' + type.name) for type in createCtrl.issueTypes">
 		        	<option value="">-- please choose a type --</option>
 		        </select>
 		    </label>

@@ -21,7 +21,7 @@ angular.module('citizen-engagement').factory('CameraService', function($q) {
   return service;
 });
 
-angular.module('citizen-engagement').controller('CreateCtrl', function($stateParams, $ionicPopup, $http, $scope, $state, CameraService, $log, apiUrl, geolocation) {
+angular.module('citizen-engagement').controller('CreateCtrl', function($q, $stateParams, $ionicPopup, $http, $scope, $state, CameraService, $log, apiUrl, geolocation, qimgSecret, qimgUrl ) {
 
   var createCtrl = this;
   $scope.$on('$ionicView.beforeEnter', function() {
@@ -36,8 +36,11 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
 
   });
 
-  createCtrl.takePicture = function() {
+  createCtrl.issue = {};
 
+  // Take a picture and attach it to "createCtrl.issue"
+  createCtrl.takePicture = function() {
+    // Display an alert if the camera is not supported
     if (!CameraService.isSupported()) {
       return $ionicPopup.alert({
         title: 'Not supported',
@@ -45,34 +48,57 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
       });
     }
 
-    CameraService.getPicture().then(function(result) {
+    // Take the picture
+    CameraService.getPicture({ quality: 50 }).then(function(result) {
       $log.debug('Picture taken!');
       createCtrl.pictureData = result;
-
-
     }).catch(function(err) {
       $log.error('Could not get picture because: ' + err.message);
     });
   };
-  
 
-  createCtrl.createIssue = function(){
-      // requete get
-    
+  // Create an issue:
+  // * First upload the picture to the qimg API
+  // * Then create the issue using the image URL provided by the qimg API
+  createCtrl.createIssue = function() {
+    return postImage().then(postIssue);
+  };
+
+  function postImage() {
+    if (!createCtrl.pictureData) {
+      // If no image was taken, return a promise resolved with "null"
+      return $q.when(null);
+    }
+
+    // Upload the image to the qimg API
+    return $http({
+      method: 'POST',
+      url: qimgUrl + '/images',
+      headers: {
+        Authorization: 'Bearer ' + qimgSecret
+      },
+      data: {
+        data: createCtrl.pictureData
+      }
+    });
+  }
+
+  function postIssue(imageRes) {
 
 
 
-      // we get the location of the user posting the issue
+    // Use the image URL from the qimg API response (if any)
+    if (imageRes) {
+      createCtrl.issue.imageUrl = imageRes.data.url;
+    }
 
-      geolocation.getLocation().then(function(data){
+    geolocation.getLocation().then(function(data){
         var x = data.coords.latitude;
         var y = data.coords.longitude;
 
         // if some optional inputs are undefined, set them to null
 
-        if(!createCtrl.description){
-          createCtrl.description ="";
-        }
+       
         if(!createCtrl.tags){
           var tags=[];
         }else{
@@ -80,11 +106,7 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
 
           var tags = createCtrl.tags.split(',');
         }
-        if(!createCtrl.img){
-          createCtrl.img ="";
-        }
-
-
+        
 
         // we call the service to create the issue
 
@@ -95,9 +117,9 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
           'Content-Type': 'application/json'
         },
         data: {
-          "description": createCtrl.description,
+          "description": createCtrl.issue.description,
           "tags": tags,
-          "imageUrl": createCtrl.img,
+          "imageUrl": createCtrl.issue.imageUrl,
           "location": {
             "coordinates": [
               y,
@@ -105,15 +127,15 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
             ],
             "type": "Point"
           },
-          "issueTypeHref": createCtrl.issue_type.href
+          "issueTypeHref": createCtrl.issue.issue_type.href
 
       }        
       }).then(function(res) {
 
         // empty the form
        
-       createCtrl.img ="";
-       createCtrl.description ="";
+       createCtrl.pictureData ="";
+       createCtrl.issue.description ="";
        createCtrl.tags ="";
        return res.data;
 
@@ -129,4 +151,5 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($statePar
       
   }
 
+  
 });
