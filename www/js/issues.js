@@ -1,15 +1,16 @@
 angular.module('citizen-engagement').factory('IssueService', function($http, apiUrl) {
   var service = {};
 
-  //Get all issues
+  //Get all issues isung POST mehod on issues/searches from the api in order to get send data
   service.getIssues = function(state, page, items) {
     page = page || 1; // Start from page 1
     items = items || [];
+    //initialize the request as an object of parameters
     var requestData = {};
     if(state){
+      //define the issue's state that we want to get
       requestData.state = state;
     }
-    // GET the current page
     return $http({
       method: 'POST',
       url: apiUrl + '/issues/searches',
@@ -43,6 +44,7 @@ angular.module('citizen-engagement').factory('IssueService', function($http, api
         pageSize: 50
       },
       data: {
+        //define the location of the screen using mongoose geometry query as a polygon
         location: {
           '$geoWithin': {
            '$geometry': {
