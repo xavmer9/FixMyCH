@@ -1,5 +1,3 @@
-console.log("test");
-
 angular.module('citizen-engagement').controller('SingleCtrl', function($stateParams, $http, $scope, $state, apiUrl) {
   // The $ionicView.beforeEnter event happens every time the screen is displayed.
   var singleCtrl = this;
@@ -41,21 +39,29 @@ angular.module('citizen-engagement').controller('SingleCtrl', function($statePar
     
   }
 
-  function getIssueComments(id){
-    // requete get
-    // creation du resultat ou pas?
-      
-    return $http({
-      method: 'GET',
-      url: apiUrl+'/issues/'+id+'/comments?include=author',
-      
-    }).then(function(res) {
+  function getIssueComments(id, page, comments){
 
-     return res.data;
 
-    }).catch(function() {
+     page = page || 1; // Start from page 1
+     comments = comments || [];
+        
+      return $http({
+        method: 'GET',
+        url: apiUrl+'/issues/'+ id +'/comments?include=author',
+        params: {
+          page: page
+        }
+      }).then(function(res) {
 
-    });
+        if (res.data.length) {
+          // If there are any items, add them
+          // and recursively fetch the next page
+          comments = comments.concat(res.data);
+          return getIssueComments(id ,page + 1, comments);
+        }
+
+        return comments;
+      });
     
   }
 
