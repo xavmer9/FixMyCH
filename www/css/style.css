@@ -39,3 +39,8 @@ p {
     font-size: 32px;
 }
 **/
+
+.imgDetails {
+  width: 100%;
+  height: auto;
+}
