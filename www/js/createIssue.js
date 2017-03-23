@@ -61,7 +61,10 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($q, $stat
   // * First upload the picture to the qimg API
   // * Then create the issue using the image URL provided by the qimg API
   createCtrl.createIssue = function() {
-    return postImage().then(postIssue);
+    return postImage().then(postIssue).catch(function(err) {
+      $log.error('Could not create issue because: ' + err.message);
+      createCtrl.error = err.message;
+    });
   };
 
   function postImage() {
@@ -92,25 +95,25 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($q, $stat
       createCtrl.issue.imageUrl = imageRes.data.url;
     }
 
-    geolocation.getLocation().then(function(data){
-        var x = data.coords.latitude;
-        var y = data.coords.longitude;
+    return geolocation.getLocation().then(function(data){
+      var x = data.coords.latitude;
+      var y = data.coords.longitude;
 
-        // if some optional inputs are undefined, set them to null
+      // if some optional inputs are undefined, set them to null
 
-       
-        if(!createCtrl.tags){
-          var tags=[];
-        }else{
-          // we split the user input seperated by coma to create the right tags
+     
+      if(!createCtrl.tags){
+        var tags=[];
+      }else{
+        // we split the user input seperated by coma to create the right tags
 
-          var tags = createCtrl.tags.split(',');
-        }
-        
+        var tags = createCtrl.tags.split(',');
+      }
+      
 
-        // we call the service to create the issue
+      // we call the service to create the issue
 
-        return $http({
+      return $http({
         method: 'POST',
         url: apiUrl+'/issues',
         headers: {
@@ -129,7 +132,7 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($q, $stat
           },
           "issueTypeHref": createCtrl.issue.issue_type.href
 
-      }        
+        }     
       }).then(function(res) {
 
         // empty the form
@@ -139,15 +142,9 @@ angular.module('citizen-engagement').controller('CreateCtrl', function($q, $stat
        createCtrl.tags ="";
        return res.data;
 
-      }).catch(function() {
-        createCtrl.error = "Please you have to add some content to your comment";
-        // If an error occurs, hide the loading message and show an error message.
-        
       });
      
-      }).catch(function(err) {
-        $log.error('Could not get location because: ' + err.message);
-      });
+    });
       
   }
 
