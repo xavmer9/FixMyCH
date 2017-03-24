@@ -48,10 +48,12 @@ angular.module('citizen-engagement').controller('MapCtrl', function(IssueService
     }
   }
 
+  //load markers when user move on the map
   $scope.$on('leafletDirectiveMap.moveend', function(event, map){
     loadMarkers();
   });
 
+  //load markers on a user's location (on the map)
   function loadMarkers() {
     leafletData.getMap().then(function(map) {
       IssueService.getIssuesByLocation(map).then(function(issues){

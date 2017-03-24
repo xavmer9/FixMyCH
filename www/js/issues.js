@@ -70,6 +70,7 @@ angular.module('citizen-engagement').factory('IssueService', function($http, api
     });
   };
 
+  //return user's issues data
   service.getMyIssues = function() {
     // GET me/issues
     return $http({
@@ -80,8 +81,6 @@ angular.module('citizen-engagement').factory('IssueService', function($http, api
       return res.data;
     });
   };
-
-
   return service;
 
 });
@@ -90,8 +89,8 @@ angular.module('citizen-engagement').controller('IssuesCtrl', function(IssueServ
   var issuesCtrl = this;
   issuesCtrl.filter = 'all';
 
+  //listen toogle filter Issues of users event
   issuesCtrl.toggleMine = function(){
-
     if(issuesCtrl.filter == 'mine'){
       issuesCtrl.filter = 'all';
     }else {
@@ -100,6 +99,7 @@ angular.module('citizen-engagement').controller('IssuesCtrl', function(IssueServ
     loadIssues();
   };
 
+  //listen toogle filter NewIssues event
   issuesCtrl.toggleNew = function(){
     if(issuesCtrl.filter == 'new'){
       issuesCtrl.filter = 'all';
@@ -109,6 +109,7 @@ angular.module('citizen-engagement').controller('IssuesCtrl', function(IssueServ
     loadIssues();
   };
 
+  //listen toogle filter inProgressIssues event
   issuesCtrl.toggleInProgress = function(){
     if(issuesCtrl.filter == 'inProgress'){
       issuesCtrl.filter = 'all';
