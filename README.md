@@ -26,7 +26,7 @@ Users can also consult the list of issues, and filter the list. By clicking on a
 ## View and comments functions
 Users can also view and posts comments on issues.
 
-![view.png]({{site.baseurl}}/view.png)
+![view.png](/view.png)
 
 
 ![comment.png](/comment.png)
