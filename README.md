@@ -37,3 +37,5 @@ Users can also view and posts comments on issues.
 Each logged in user can simply report an issue (it will geolocate him automatically) with various details (description, image, category...etc)
 
 ![create.png](/create.png)
+
+## Enjoy and spread!
